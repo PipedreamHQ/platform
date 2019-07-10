@@ -1,0 +1,8 @@
+{
+  "name": "@pipedream/platform",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "author": "Pipedream Team",
+  "license": "ISC"
+}
