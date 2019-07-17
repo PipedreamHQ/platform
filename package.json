@@ -1,6 +1,6 @@
 {
   "name": "@pipedreamhq/platform",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "",
   "main": "dist/platform.js",
   "types": "lib/platform.ts",
