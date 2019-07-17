@@ -1,12 +1,4 @@
 declare global {
-	// Event object that persists throughout worfklow with observability after each step.
-	const $event: any;
-
-	// End workflow with optional message.
-	function $end(msg?: string): void;
-
-	// TODO other $things we support
-
 	type SendPayload = any; // XXX ?
 
 	// mimics axios config
@@ -51,11 +43,17 @@ declare global {
 	}
 
 	interface SendFunctionsWrapper {
-		function http(config: SendConfigHTTP): void;
-		function s3(config: SendConfigS3): void;
-		function sql(config: SendConfigSQL): void;
-		function snowflake(config: SendConfigSnowflake): void;
-		function sse(config: SendConfigSSE): void:
+		http: (config: SendConfigHTTP) => void;
+		s3: (config: SendConfigS3) => void;
+		sql: (config: SendConfigSQL) => void;
+		snowflake: (config: SendConfigSnowflake) => void;
+		sse: (config: SendConfigSSE) => void:
 	}
+	
+	// Event object that persists throughout worfklow with observability after each step.
+	const $event: any;
+	// End workflow with optional message.
+	const $end = (msg?: string) => void;
+	// Use async Pipedream destinations.
 	const $send: SendFunctionsWrapper;
 }
