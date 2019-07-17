@@ -1,7 +1,8 @@
 {
   "name": "@pipedreamhq/platform",
   "version": "0.0.2",
-  "description": "",
+  "description": "Pipedream platform globals (typing and runtime type checking)",
+  "homepage": "https://pipedream.com",
   "main": "dist/platform.js",
   "types": "lib/platform.ts",
   "scripts": {
@@ -9,7 +10,11 @@
     "test": "jest"
   },
   "author": "Pipedream Team",
-  "license": "ISC",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/PipedreamHQ/platform.git"
+  },
   "devDependencies": {
     "fp-ts": "^2.0.2",
     "husky": "^3.0.0",
