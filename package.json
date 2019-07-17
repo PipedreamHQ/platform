@@ -3,6 +3,22 @@
   "version": "0.0.1",
   "description": "",
   "main": "index.js",
+  "scripts": {
+    "build": "tsc",
+    "test": "jest"
+  },
   "author": "Pipedream Team",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "fp-ts": "^2.0.2",
+    "husky": "^3.0.0",
+    "io-ts": "^2.0.0",
+    "jest": "^24.8.0",
+    "typescript": "^3.5.3"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run build && npm test && git add dist"
+    }
+  }
 }

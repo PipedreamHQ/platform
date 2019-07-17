@@ -1,0 +1,14 @@
+{
+	"compilerOptions": {
+		"module": "commonjs",
+		"outDir": "./dist",
+		"strictNullChecks": true,
+		"target": "es2018"
+	},
+	"include": [
+		"./lib/**/*"
+	],
+	"exclude": [
+		"node_modules"
+	]
+}
