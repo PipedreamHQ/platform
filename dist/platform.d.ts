@@ -1,0 +1,105 @@
+import * as t from "io-ts";
+export declare const SendConfigEmail: t.PartialC<{
+    html: t.StringC;
+    subject: t.StringC;
+    text: t.StringC;
+}>;
+export declare type SendConfigEmail = t.TypeOf<typeof SendConfigEmail>;
+export declare const SendConfigHTTP: t.IntersectionC<[t.ExactC<t.TypeC<{
+    method: t.StringC;
+    url: t.StringC;
+}>>, t.PartialC<{
+    auth: t.ExactC<t.TypeC<{
+        password: t.StringC;
+        username: t.StringC;
+    }>>;
+    data: t.UnionC<[t.StringC, t.ObjectC]>;
+    headers: t.ObjectC;
+    params: t.ObjectC;
+}>]>;
+export declare type SendConfigHTTP = t.TypeOf<typeof SendConfigHTTP>;
+export declare const SendConfigS3: t.ExactC<t.TypeC<{
+    bucket: t.StringC;
+    payload: t.UnionC<[t.StringC, t.ObjectC]>;
+    prefix: t.StringC;
+}>>;
+export declare type SendConfigS3 = t.TypeOf<typeof SendConfigS3>;
+export declare const SendConfigSQL: t.ExactC<t.TypeC<{
+    payload: t.UnionC<[t.StringC, t.ObjectC]>;
+    table: t.StringC;
+}>>;
+export declare type SendConfigSQL = t.TypeOf<typeof SendConfigSQL>;
+export declare const SendConfigSnowflake: t.ExactC<t.TypeC<{
+    account: t.StringC;
+    database: t.StringC;
+    host: t.StringC;
+    payload: t.UnionC<[t.StringC, t.ObjectC]>;
+    pipe_name: t.StringC;
+    private_key: t.StringC;
+    schema: t.StringC;
+    stage_name: t.StringC;
+    user: t.StringC;
+}>>;
+export declare type SendConfigSnowflake = t.TypeOf<typeof SendConfigSnowflake>;
+export declare const SendConfigSSE: t.ExactC<t.TypeC<{
+    channel: t.StringC;
+    payload: t.UnionC<[t.StringC, t.ObjectC]>;
+}>>;
+export declare type SendConfigSSE = t.TypeOf<typeof SendConfigSSE>;
+interface SendFunctionsWrapper {
+    email: (config: SendConfigEmail) => void;
+    http: (config: SendConfigHTTP) => void;
+    s3: (config: SendConfigS3) => void;
+    sql: (config: SendConfigSQL) => void;
+    snowflake: (config: SendConfigSnowflake) => void;
+    sse: (config: SendConfigSSE) => void;
+}
+export declare const sendTypeMap: {
+    email: t.PartialC<{
+        html: t.StringC;
+        subject: t.StringC;
+        text: t.StringC;
+    }>;
+    http: t.IntersectionC<[t.ExactC<t.TypeC<{
+        method: t.StringC;
+        url: t.StringC;
+    }>>, t.PartialC<{
+        auth: t.ExactC<t.TypeC<{
+            password: t.StringC;
+            username: t.StringC;
+        }>>;
+        data: t.UnionC<[t.StringC, t.ObjectC]>;
+        headers: t.ObjectC;
+        params: t.ObjectC;
+    }>]>;
+    s3: t.ExactC<t.TypeC<{
+        bucket: t.StringC;
+        payload: t.UnionC<[t.StringC, t.ObjectC]>;
+        prefix: t.StringC;
+    }>>;
+    sql: t.ExactC<t.TypeC<{
+        payload: t.UnionC<[t.StringC, t.ObjectC]>;
+        table: t.StringC;
+    }>>;
+    snowflake: t.ExactC<t.TypeC<{
+        account: t.StringC;
+        database: t.StringC;
+        host: t.StringC;
+        payload: t.UnionC<[t.StringC, t.ObjectC]>;
+        pipe_name: t.StringC;
+        private_key: t.StringC;
+        schema: t.StringC;
+        stage_name: t.StringC;
+        user: t.StringC;
+    }>>;
+    sse: t.ExactC<t.TypeC<{
+        channel: t.StringC;
+        payload: t.UnionC<[t.StringC, t.ObjectC]>;
+    }>>;
+};
+export declare let $event: any;
+export declare const END_NEEDLE = "__pd_end";
+export declare function $end(message?: string): void;
+export declare let $send: SendFunctionsWrapper;
+export declare const $sendConfigRuntimeTypeChecker: {};
+export {};
