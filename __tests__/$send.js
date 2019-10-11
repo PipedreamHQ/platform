@@ -1,5 +1,5 @@
 // purposefully test COMPILED platform.js! (just as lambda_maker would)
-const { $sendConfigRuntimeTypeChecker } = require("../dist/platform")
+const { $sendConfigRuntimeTypeChecker } = require("../dist")
 
 function randString() {
   return ""+Math.random()

@@ -1,6 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const t = require("io-ts");
+const axios_1 = require("./axios");
+exports.axios = axios_1.default;
 const SendPayload = t.union([t.string, t.object]);
 exports.SendConfigEmail = t.partial({
     html: t.string,

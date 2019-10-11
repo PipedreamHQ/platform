@@ -1,4 +1,6 @@
 import * as t from "io-ts";
+import axios from "./axios";
+export { axios };
 export declare const SendConfigEmail: t.PartialC<{
     html: t.StringC;
     subject: t.StringC;
@@ -102,4 +104,3 @@ export declare const END_NEEDLE = "__pd_end";
 export declare function $end(message?: string): void;
 export declare let $send: SendFunctionsWrapper;
 export declare const $sendConfigRuntimeTypeChecker: {};
-export {};

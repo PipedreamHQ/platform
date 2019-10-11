@@ -1,5 +1,9 @@
 import * as t from "io-ts"
 
+import axios from "./axios"
+
+export { axios }
+
 const SendPayload = t.union([t.string, t.object]);
 type SendPayload = t.TypeOf<typeof SendPayload>;
 
