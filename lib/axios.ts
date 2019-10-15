@@ -1,5 +1,6 @@
 import axios from "axios"
 
+/*
 function observability(resp) {
   return {
     request: resp.config,
@@ -20,8 +21,13 @@ export default async function(step: any, config) {
     if (err.isAxiosError) {
       step.axios = observability(err.response)
     } else {
-      step.error = err
+      step.$error = err
     }
     throw err
   }
+}
+*/
+
+export default async function(step: any, config) {
+  return (await axios(config)).data
 }
