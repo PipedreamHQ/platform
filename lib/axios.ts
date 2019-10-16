@@ -29,5 +29,16 @@ export default async function(step: any, config) {
 */
 
 export default async function(step: any, config) {
-  return (await axios(config)).data
+  // XXX warn about mutating config object... or clone?
+  for (const k in config.headers || {}) {
+    if (typeof config.headers[k] === "undefined") {
+      delete config.headers[k]
+    }
+  }
+  try {
+    return (await axios(config)).data
+  } catch (err) {
+    this.debug = err.response
+    throw err
+  }
 }
