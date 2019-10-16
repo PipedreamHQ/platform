@@ -39,7 +39,7 @@ async function default_1(step, config) {
         return (await axios_1.default(config)).data;
     }
     catch (err) {
-        this.debug = err.response;
+        step.debug = err.response;
         throw err;
     }
 }

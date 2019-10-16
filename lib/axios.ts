@@ -38,7 +38,7 @@ export default async function(step: any, config) {
   try {
     return (await axios(config)).data
   } catch (err) {
-    this.debug = err.response
+    step.debug = err.response
     throw err
   }
 }
