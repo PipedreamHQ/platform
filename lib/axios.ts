@@ -35,8 +35,8 @@ export default async function(step: any, config, sign?) {
       request_data: config,
       sign,
     }
-    const oauthEndpoint = "entye5w7a3mw209.m.pipedream.net"
-    const oauthSignature = (await axios.post(`https://${oauthEndpoint}?pipedream_response=1`, payload)).data
+    const oauthEndpoint = "enlb0ktwajm8sen"
+    const oauthSignature = (await axios.post(`https://${oauthEndpoint}.m.pipedream.net?pipedream_response=1`, payload)).data
     config.headers = oauthSignature
   }
   for (const k in config.headers || {}) {
