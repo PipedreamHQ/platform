@@ -28,8 +28,17 @@ export default async function(step: any, config) {
 }
 */
 
-export default async function(step: any, config) {
+export default async function(step: any, config, sign?) {
   // XXX warn about mutating config object... or clone?
+  if (sign) {
+    const payload = {
+      request_data: config,
+      sign,
+    }
+    const oauthEndpoint = "entye5w7a3mw209.m.pipedream.net"
+    const oauthSignature = (await axios.post(`https://${oauthEndpoint}?pipedream_response=1`, payload)).data
+    config.headers = oauthSignature
+  }
   for (const k in config.headers || {}) {
     if (typeof config.headers[k] === "undefined") {
       delete config.headers[k]
