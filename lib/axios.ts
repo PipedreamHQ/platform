@@ -28,15 +28,31 @@ export default async function(step: any, config) {
 }
 */
 
+// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/encodeURI
+// see non-escaped chars
+// this handles not encoding [!'()*]
+function encodeReservedChars(str) {
+  return str.replace(/[!'()*]/g, function(c) {
+    return '%' + c.charCodeAt(0).toString(16)
+  })
+}
+
 export default async function(step: any, config, signConfig?) {
   // XXX warn about mutating config object... or clone?
+  // OAuth1 request
   if (signConfig) {
+    const {oauthSignerUri, token} = signConfig
+
+    // this handles encoding query string to make sure we match what we sign
+    const url = new URL(config.url)
+    url.search = encodeReservedChars(url.search.substr(1))
+    config.url = url.toString()
+
     const payload = {
-      request_data: config,
-      sign: signConfig,
+      requestData: config,
+      token,
     }
-    const oauthEndpoint = "enlb0ktwajm8sen"
-    const oauthSignature = (await axios.post(`https://${oauthEndpoint}.m.pipedream.net?pipedream_response=1`, payload)).data
+    const oauthSignature = (await axios.post(oauthSignerUri, payload)).data
     if (!config.headers) config.headers = {}
     config.headers.Authorization = oauthSignature
   }
