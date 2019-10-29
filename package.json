@@ -12,7 +12,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/PipedreamHQ/platform.git"
+    "url": "https://github.com/jsendo/platform.git"
   },
   "dependencies": {
     "axios": "^0.19.0",
