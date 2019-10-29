@@ -1,8 +1,7 @@
 {
-  "name": "@pipedreamhq/platform",
-  "version": "0.2.2",
+  "name": "@jsendo/platform",
+  "version": "0.2.3",
   "description": "Pipedream platform globals (typing and runtime type checking)",
-  "homepage": "https://pipedream.com",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
@@ -13,7 +12,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/PipedreamHQ/platform.git"
+    "url": "https://github.com/jsendo/platform.git"
   },
   "dependencies": {
     "axios": "^0.19.0",
