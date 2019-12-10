@@ -1,6 +1,7 @@
 import * as t from "io-ts";
 import axios from "./axios";
 export { axios };
+export { cloneSafe, jsonStringifySafe } from "./utils";
 export declare const SendConfigEmail: t.PartialC<{
     html: t.StringC;
     subject: t.StringC;

@@ -3,6 +3,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const t = require("io-ts");
 const axios_1 = require("./axios");
 exports.axios = axios_1.default;
+var utils_1 = require("./utils");
+exports.cloneSafe = utils_1.cloneSafe;
+exports.jsonStringifySafe = utils_1.jsonStringifySafe;
 const SendPayload = t.union([t.string, t.object]);
 exports.SendConfigEmail = t.partial({
     html: t.string,

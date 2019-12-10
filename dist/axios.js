@@ -1,33 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const axios_1 = require("axios");
-/*
-function observability(resp) {
-  return {
-    request: resp.config,
-    response: {
-      status: resp.status,
-      headers: resp.headers,
-      data: resp.data,
-    },
-  }
-}
-
-export default async function(step: any, config) {
-  try {
-    const resp = await axios(config)
-    step.axios = observability(resp)
-    return resp.data
-  } catch (err) {
-    if (err.isAxiosError) {
-      step.axios = observability(err.response)
-    } else {
-      step.$error = err
-    }
-    throw err
-  }
-}
-*/
+const utils_1 = require("./utils");
 // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/encodeURI
 // see non-escaped chars
 // this handles not encoding [!'()*]
@@ -41,10 +15,12 @@ async function default_1(step, config, signConfig) {
     // OAuth1 request
     if (signConfig) {
         const { oauthSignerUri, token } = signConfig;
-        // this handles encoding query string to make sure we match what we sign
-        const url = new URL(config.url);
-        url.search = encodeReservedChars(url.search.substr(1));
-        config.url = url.toString();
+        if (config.url) {
+            // this handles encoding query string to make sure we match what we sign
+            const url = new URL(config.url);
+            url.search = encodeReservedChars(url.search.substr(1));
+            config.url = url.toString();
+        }
         const payload = {
             requestData: config,
             token,
@@ -63,7 +39,8 @@ async function default_1(step, config, signConfig) {
         return (await axios_1.default(config)).data;
     }
     catch (err) {
-        step.debug = err.response;
+        if (err.response)
+            step.debug = utils_1.cloneSafe(err.response);
         throw err;
     }
 }

@@ -3,6 +3,7 @@ import * as t from "io-ts"
 import axios from "./axios"
 
 export { axios }
+export { cloneSafe, jsonStringifySafe } from "./utils"
 
 const SendPayload = t.union([t.string, t.object]);
 type SendPayload = t.TypeOf<typeof SendPayload>;

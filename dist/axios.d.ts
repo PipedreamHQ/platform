@@ -1,1 +1,2 @@
-export default function (step: any, config: any, signConfig?: any): Promise<any>;
+import { AxiosRequestConfig } from "axios";
+export default function (step: any, config: AxiosRequestConfig, signConfig?: any): Promise<any>;
