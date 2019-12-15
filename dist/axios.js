@@ -1,39 +1,61 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const axios_1 = require("axios");
+const buildURL_1 = require("axios/lib/helpers/buildURL");
 const utils_1 = require("./utils");
-// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/encodeURI
-// see non-escaped chars
-// this handles not encoding [!'()*]
-function encodeReservedChars(str) {
-    return str.replace(/[!'()*]/g, function (c) {
-        return '%' + c.charCodeAt(0).toString(16);
-    });
+function cleanObject(o) {
+    for (const k in o || {}) {
+        if (typeof o[k] === "undefined") {
+            delete o[k];
+        }
+    }
 }
+// remove query params from url and put into config.params
+function removeSearchFromUrl(config) {
+    if (!config.url)
+        return;
+    const url = new URL(config.url);
+    const queryString = url.search.substr(1);
+    if (queryString) {
+        // https://stackoverflow.com/a/8649003/387413
+        const urlParams = JSON.parse('{"' + queryString.replace(/&/g, '","').replace(/=/g, '":"') + '"}', function (key, value) {
+            return key === "" ? value : decodeURIComponent(value);
+        });
+        for (const k in urlParams) {
+            if (!config.params)
+                config.params = {};
+            if (k in config.params)
+                continue; // params object > url query params
+            config.params[k] = urlParams[k];
+        }
+        url.search = "";
+        config.url = url.toString(); // if ends with ? should be okay, but could be cleaner
+    }
+}
+// XXX warn about mutating config object... or clone?
 async function default_1(step, config, signConfig) {
-    // XXX warn about mutating config object... or clone?
+    cleanObject(config.headers);
+    cleanObject(config.params);
+    if (typeof config.data === "object") {
+        cleanObject(config.data);
+    }
+    removeSearchFromUrl(config);
     // OAuth1 request
     if (signConfig) {
         const { oauthSignerUri, token } = signConfig;
-        if (config.url) {
-            // this handles encoding query string to make sure we match what we sign
-            const url = new URL(config.url);
-            url.search = encodeReservedChars(url.search.substr(1));
-            config.url = url.toString();
-        }
+        const requestData = {
+            method: config.method || "get",
+            url: buildURL_1.default(config.url, config.params),
+            data: config.data,
+        };
         const payload = {
-            requestData: config,
+            requestData,
             token,
         };
         const oauthSignature = (await axios_1.default.post(oauthSignerUri, payload)).data;
         if (!config.headers)
             config.headers = {};
         config.headers.Authorization = oauthSignature;
-    }
-    for (const k in config.headers || {}) {
-        if (typeof config.headers[k] === "undefined") {
-            delete config.headers[k];
-        }
     }
     try {
         return (await axios_1.default(config)).data;
