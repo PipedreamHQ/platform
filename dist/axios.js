@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const axios_1 = require("axios");
-const buildURL_1 = require("axios/lib/helpers/buildURL");
+const buildURL = require("axios/lib/helpers/buildURL");
 const utils_1 = require("./utils");
 function cleanObject(o) {
     for (const k in o || {}) {
@@ -45,7 +45,7 @@ async function default_1(step, config, signConfig) {
         const { oauthSignerUri, token } = signConfig;
         const requestData = {
             method: config.method || "get",
-            url: buildURL_1.default(config.url, config.params),
+            url: buildURL(config.url, config.params),
             data: config.data,
         };
         const payload = {

@@ -1,6 +1,6 @@
 import axios from "axios"
 import { AxiosRequestConfig } from "axios"
-import buildURL from "axios/lib/helpers/buildURL"
+import * as buildURL from "axios/lib/helpers/buildURL"
 import { cloneSafe } from "./utils"
 
 function cleanObject(o: {string: any}) {
