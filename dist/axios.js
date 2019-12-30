@@ -32,6 +32,22 @@ function removeSearchFromUrl(config) {
         config.url = url.toString(); // if ends with ? should be okay, but could be cleaner
     }
 }
+// this fixes query strings with spaces in them causing issues when signing
+// XXX https://github.com/axios/axios/pull/2563
+function paramsSerializer(p) {
+    const encodeKey = (k) => {
+        return encodeURIComponent(k)
+            .replace(/%40/gi, '@')
+            .replace(/%3A/gi, ':')
+            .replace(/%24/g, '$')
+            .replace(/%2C/gi, ',')
+            .replace(/%20/g, '+')
+            .replace(/%5B/gi, '[')
+            .replace(/%5D/gi, ']');
+    };
+    return Object.keys(p).map(k => encodeKey(k) + '=' + encodeURIComponent(p[k])).join('&');
+}
+;
 // XXX warn about mutating config object... or clone?
 async function default_1(step, config, signConfig) {
     cleanObject(config.headers);
@@ -45,7 +61,7 @@ async function default_1(step, config, signConfig) {
         const { oauthSignerUri, token } = signConfig;
         const requestData = {
             method: config.method || "get",
-            url: buildURL(config.url, config.params),
+            url: buildURL(config.url, config.params, paramsSerializer),
             data: config.data,
         };
         const payload = {
