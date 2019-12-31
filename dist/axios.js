@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const axios_1 = require("axios");
 const buildURL = require("axios/lib/helpers/buildURL");
+const querystring = require("querystring");
 const utils_1 = require("./utils");
 function cleanObject(o) {
     for (const k in o || {}) {
@@ -32,22 +33,15 @@ function removeSearchFromUrl(config) {
         config.url = url.toString(); // if ends with ? should be okay, but could be cleaner
     }
 }
-// this fixes query strings with spaces in them causing issues when signing
-// XXX https://github.com/axios/axios/pull/2563
-function paramsSerializer(p) {
-    const encodeKey = (k) => {
-        return encodeURIComponent(k)
-            .replace(/%40/gi, '@')
-            .replace(/%3A/gi, ':')
-            .replace(/%24/g, '$')
-            .replace(/%2C/gi, ',')
-            .replace(/%20/g, '+')
-            .replace(/%5B/gi, '[')
-            .replace(/%5D/gi, ']');
-    };
-    return Object.keys(p).map(k => encodeKey(k) + '=' + encodeURIComponent(p[k])).join('&');
+// https://github.com/ttezel/twit/blob/master/lib/helpers.js#L11
+function oauth1ParamsSerializer(p) {
+    return querystring.stringify(p)
+        .replace(/\!/g, "%21")
+        .replace(/\'/g, "%27")
+        .replace(/\(/g, "%28")
+        .replace(/\)/g, "%29")
+        .replace(/\*/g, "%2A");
 }
-;
 // XXX warn about mutating config object... or clone?
 async function default_1(step, config, signConfig) {
     cleanObject(config.headers);
@@ -61,9 +55,10 @@ async function default_1(step, config, signConfig) {
         const { oauthSignerUri, token } = signConfig;
         const requestData = {
             method: config.method || "get",
-            url: buildURL(config.url, config.params, paramsSerializer),
+            url: buildURL(config.url, config.params, oauth1ParamsSerializer),
             data: config.data,
         };
+        config.paramsSerializer = oauth1ParamsSerializer;
         const payload = {
             requestData,
             token,

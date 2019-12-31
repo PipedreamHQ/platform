@@ -1,6 +1,7 @@
 import axios from "axios"
 import { AxiosRequestConfig } from "axios"
 import * as buildURL from "axios/lib/helpers/buildURL"
+import * as querystring from "querystring"
 import { cloneSafe } from "./utils"
 
 function cleanObject(o: {string: any}) {
@@ -31,21 +32,15 @@ function removeSearchFromUrl(config: AxiosRequestConfig) {
   }
 }
 
-// this fixes query strings with spaces in them causing issues when signing
-// XXX https://github.com/axios/axios/pull/2563
-function paramsSerializer(p: any) {
-  const encodeKey = (k: string) => {
-    return encodeURIComponent(k)
-      .replace(/%40/gi, '@')
-      .replace(/%3A/gi, ':')
-      .replace(/%24/g, '$')
-      .replace(/%2C/gi, ',')
-      .replace(/%20/g, '+')
-      .replace(/%5B/gi, '[')
-      .replace(/%5D/gi, ']')
-  }
-  return Object.keys(p).map(k => encodeKey(k) + '=' + encodeURIComponent(p[k])).join('&')
-};
+// https://github.com/ttezel/twit/blob/master/lib/helpers.js#L11
+function oauth1ParamsSerializer(p: any) {
+  return querystring.stringify(p)
+    .replace(/\!/g, "%21")
+    .replace(/\'/g, "%27")
+    .replace(/\(/g, "%28")
+    .replace(/\)/g, "%29")
+    .replace(/\*/g, "%2A")
+}
 
 // XXX warn about mutating config object... or clone?
 export default async function(step: any, config: AxiosRequestConfig, signConfig?: any) {
@@ -60,9 +55,10 @@ export default async function(step: any, config: AxiosRequestConfig, signConfig?
     const {oauthSignerUri, token} = signConfig
     const requestData = {
       method: config.method || "get",
-      url: buildURL(config.url, config.params, paramsSerializer), // build url as axios will
+      url: buildURL(config.url, config.params, oauth1ParamsSerializer), // build url as axios will
       data: config.data,
     }
+    config.paramsSerializer = oauth1ParamsSerializer
     const payload = {
       requestData,
       token,
