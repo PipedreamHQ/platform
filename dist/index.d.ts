@@ -8,8 +8,9 @@ export declare const SendConfigEmail: t.PartialC<{
     text: t.StringC;
 }>;
 export declare type SendConfigEmail = t.TypeOf<typeof SendConfigEmail>;
+export declare const HTTP_METHODS: string[];
 export declare const SendConfigHTTP: t.IntersectionC<[t.ExactC<t.TypeC<{
-    method: t.StringC;
+    method: t.KeyofC<{}>;
     url: t.StringC;
 }>>, t.PartialC<{
     auth: t.ExactC<t.TypeC<{
@@ -64,7 +65,7 @@ export declare const sendTypeMap: {
         text: t.StringC;
     }>;
     http: t.IntersectionC<[t.ExactC<t.TypeC<{
-        method: t.StringC;
+        method: t.KeyofC<{}>;
         url: t.StringC;
     }>>, t.PartialC<{
         auth: t.ExactC<t.TypeC<{

@@ -20,8 +20,25 @@ const SendConfigHTTPAuth = t.strict({
     password: t.string,
     username: t.string,
 });
+// https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods
+exports.HTTP_METHODS = [
+    "GET",
+    "HEAD",
+    "POST",
+    "PUT",
+    "DELETE",
+    "CONNECT",
+    "OPTIONS",
+    "TRACE",
+    "PATCH",
+];
+// HTTP method must be uppercase (for kotlin in coordinator -- i voted to make it case insensitive, but w.e for now)
+const SendConfigHTTPMethod = t.keyof(exports.HTTP_METHODS.reduce((acc, v) => {
+    acc[v] = null;
+    return acc;
+}, {}));
 const SendConfigHTTP_required = t.strict({
-    method: t.string,
+    method: SendConfigHTTPMethod,
     url: t.string,
 });
 const SendConfigHTTP_optional = t.partial({
