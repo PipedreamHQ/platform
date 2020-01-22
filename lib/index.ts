@@ -15,6 +15,16 @@ export const SendConfigEmail = t.partial({
 });
 export type SendConfigEmail = t.TypeOf<typeof SendConfigEmail>;
 
+export const SendConfigEmit_required = t.strict({
+    raw_event: t.object,
+});
+
+export const SendConfigEmit_optional = t.partial({
+    event: t.object,
+});
+export const SendConfigEmit = t.intersection([SendConfigEmit_required, SendConfigEmit_optional]);
+export type SendConfigEmit = t.TypeOf<typeof SendConfigEmit>;
+
 // interface SendConfigHTTPKv {
 // 	[key: string]: string;
 // }
@@ -74,6 +84,7 @@ export type SendConfigSSE = t.TypeOf<typeof SendConfigSSE>;
 // optionals so we can use self-invoking function below
 interface SendFunctionsWrapper {
     email: (config: SendConfigEmail) => void;
+    emit: (config: SendConfigEmit) => void;
     http: (config: SendConfigHTTP) => void;
     s3: (config: SendConfigS3) => void;
     sql: (config: SendConfigSQL) => void;
@@ -83,6 +94,7 @@ interface SendFunctionsWrapper {
 // XXX would be cool to have this and SendFunctionsWrapper be more shared
 export const sendTypeMap = {
     email: SendConfigEmail,
+    emit: SendConfigEmit,
     http: SendConfigHTTP,
     s3: SendConfigS3,
     sql: SendConfigSQL,
