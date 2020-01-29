@@ -1,8 +1,13 @@
 // purposefully test COMPILED platform.js! (just as lambda_maker would)
-const { $sendConfigRuntimeTypeChecker } = require("../dist")
+const { $sendConfigRuntimeTypeChecker, HTTP_METHODS } = require("../dist")
 
 function randString() {
   return ""+Math.random()
+}
+
+function randHttpMethod() {
+  const idx = Math.floor(Math.random() * HTTP_METHODS.length)
+  return HTTP_METHODS[idx]
 }
 
 const emptyConfig = {}
@@ -65,7 +70,7 @@ describe("$send.http", () => {
   let config
   beforeEach(() => {
     config = {
-      method: randString(),
+      method: randHttpMethod(),
       url: randString(),
       auth: {
         password: randString(),

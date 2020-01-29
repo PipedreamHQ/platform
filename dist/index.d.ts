@@ -20,8 +20,9 @@ export declare const SendConfigEmit: t.IntersectionC<[t.ExactC<t.TypeC<{
     event: t.ObjectC;
 }>]>;
 export declare type SendConfigEmit = t.TypeOf<typeof SendConfigEmit>;
+export declare const HTTP_METHODS: string[];
 export declare const SendConfigHTTP: t.IntersectionC<[t.ExactC<t.TypeC<{
-    method: t.StringC;
+    method: t.KeyofC<{}>;
     url: t.StringC;
 }>>, t.PartialC<{
     auth: t.ExactC<t.TypeC<{
@@ -82,7 +83,7 @@ export declare const sendTypeMap: {
         event: t.ObjectC;
     }>]>;
     http: t.IntersectionC<[t.ExactC<t.TypeC<{
-        method: t.StringC;
+        method: t.KeyofC<{}>;
         url: t.StringC;
     }>>, t.PartialC<{
         auth: t.ExactC<t.TypeC<{

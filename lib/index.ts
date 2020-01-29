@@ -35,8 +35,26 @@ const SendConfigHTTPAuth = t.strict({
     username: t.string,
 });
 type SendConfigHTTPAuth = t.TypeOf<typeof SendConfigHTTPAuth>;
+// https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods
+export const HTTP_METHODS = [
+    "GET",
+    "HEAD",
+    "POST",
+    "PUT",
+    "DELETE",
+    "CONNECT",
+    "OPTIONS",
+    "TRACE",
+    "PATCH",
+]
+// HTTP method must be uppercase (for kotlin in coordinator -- i voted to make it case insensitive, but w.e for now)
+const SendConfigHTTPMethod = t.keyof(HTTP_METHODS.reduce((acc, v) => {
+    acc[v] = null
+    return acc
+}, {}))
+type SendConfigHTTPMethod = t.TypeOf<typeof SendConfigHTTPMethod>;
 const SendConfigHTTP_required = t.strict({
-    method: t.string, // XXX proper enum for methods here?
+    method: SendConfigHTTPMethod,
     url: t.string,
 })
 const SendConfigHTTP_optional = t.partial({
