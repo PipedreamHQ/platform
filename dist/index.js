@@ -12,6 +12,13 @@ exports.SendConfigEmail = t.partial({
     subject: t.string,
     text: t.string,
 });
+exports.SendConfigEmit_required = t.strict({
+    raw_event: t.object,
+});
+exports.SendConfigEmit_optional = t.partial({
+    event: t.object,
+});
+exports.SendConfigEmit = t.intersection([exports.SendConfigEmit_required, exports.SendConfigEmit_optional]);
 // interface SendConfigHTTPKv {
 // 	[key: string]: string;
 // }
@@ -75,6 +82,7 @@ exports.SendConfigSSE = t.strict({
 // XXX would be cool to have this and SendFunctionsWrapper be more shared
 exports.sendTypeMap = {
     email: exports.SendConfigEmail,
+    emit: exports.SendConfigEmit,
     http: exports.SendConfigHTTP,
     s3: exports.SendConfigS3,
     sql: exports.SendConfigSQL,

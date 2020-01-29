@@ -40,6 +40,31 @@ describe("$send.email", () => {
   })
 })
 
+describe("$send.emit", () => {
+  const checker = $sendConfigRuntimeTypeChecker.emit
+  let config
+  beforeEach(() => {
+    config = {
+      raw_event: {
+        key: randString(),
+      },
+    }
+  })
+
+  it("should fail with empty config", () => {
+    expect(() => checker({})).toThrow()
+  })
+
+  it("should pass with full config", () => {
+    expect(() => checker(config)).not.toThrow()
+  })
+
+  xit("should fail with .__extra", () => {
+    config.__extra = randString()
+    expect(() => checker(config)).toThrow()
+  })
+})
+
 describe("$send.http", () => {
   const checker = $sendConfigRuntimeTypeChecker.http
   let config
