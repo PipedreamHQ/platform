@@ -56,8 +56,23 @@ async function default_1(step, config, signConfig) {
         const requestData = {
             method: config.method || "get",
             url: buildURL(config.url, config.params, oauth1ParamsSerializer),
-            data: config.data,
         };
+        // the OAuth specification explicitly states that only form-encoded data should be included
+        let hasContentType = false;
+        let formEncodedContentType = false;
+        for (const k in config.headers || {}) {
+            if (/content-type/i.test(k)) {
+                hasContentType = true;
+                formEncodedContentType = config.headers[k] === "application/x-www-form-urlencoded";
+                break;
+            }
+        }
+        if (config.data && typeof config.data === "object" && formEncodedContentType) {
+            requestData.data = config.data;
+        }
+        else if (typeof config.data === "string" && (!hasContentType || formEncodedContentType)) {
+            requestData.data = querystring.parse(config.data);
+        }
         config.paramsSerializer = oauth1ParamsSerializer;
         const payload = {
             requestData,
