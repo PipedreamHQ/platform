@@ -4,7 +4,7 @@ import * as buildURL from "axios/lib/helpers/buildURL"
 import * as querystring from "querystring"
 import { cloneSafe } from "./utils"
 
-function cleanObject(o: {string: any}) {
+function cleanObject(o: { string: any }) {
   for (const k in o || {}) {
     if (typeof o[k] === "undefined") {
       delete o[k]
@@ -19,7 +19,7 @@ function removeSearchFromUrl(config: AxiosRequestConfig) {
   const queryString = url.search.substr(1)
   if (queryString) {
     // https://stackoverflow.com/a/8649003/387413
-    const urlParams = JSON.parse('{"' + queryString.replace(/&/g, '","').replace(/=/g,'":"') + '"}', function(key, value) {
+    const urlParams = JSON.parse('{"' + queryString.replace(/&/g, '","').replace(/=/g, '":"') + '"}', function (key, value) {
       return key === "" ? value : decodeURIComponent(value)
     })
     for (const k in urlParams) {
@@ -43,7 +43,7 @@ function oauth1ParamsSerializer(p: any) {
 }
 
 // XXX warn about mutating config object... or clone?
-export default async function(step: any, config: AxiosRequestConfig, signConfig?: any) {
+export default async function (step: any, config: AxiosRequestConfig, signConfig?: any) {
   cleanObject(config.headers)
   cleanObject(config.params)
   if (typeof config.data === "object") {
@@ -52,7 +52,7 @@ export default async function(step: any, config: AxiosRequestConfig, signConfig?
   removeSearchFromUrl(config)
   // OAuth1 request
   if (signConfig) {
-    const {oauthSignerUri, token} = signConfig
+    const { oauthSignerUri, token } = signConfig
     const requestData = {
       method: config.method || "get",
       url: buildURL(config.url, config.params, oauth1ParamsSerializer), // build url as axios will
@@ -84,7 +84,13 @@ export default async function(step: any, config: AxiosRequestConfig, signConfig?
   try {
     return (await axios(config)).data
   } catch (err) {
-    if (err.response) step.debug = cloneSafe(err.response)
-    throw err
+    if (err.response) {
+      if (step.export) {
+        step.export("debug", cloneSafe(err.response))
+      } else {
+        step.debug = cloneSafe(err.response)
+      }
+      throw err
+    }
   }
 }
