@@ -87,9 +87,15 @@ async function default_1(step, config, signConfig) {
         return (await axios_1.default(config)).data;
     }
     catch (err) {
-        if (err.response)
-            step.debug = utils_1.cloneSafe(err.response);
-        throw err;
+        if (err.response) {
+            if (step.export) {
+                step.export("debug", utils_1.cloneSafe(err.response));
+            }
+            else {
+                step.debug = utils_1.cloneSafe(err.response);
+            }
+            throw err;
+        }
     }
 }
 exports.default = default_1;
