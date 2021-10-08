@@ -1,3 +1,3 @@
 # Pipedream Platform
 
-See https://pipedream.com/docs/workflows/steps/code/nodejs/http-requests/ for usage examples.
+See https://pipedream.com/docs/pipedream-axios/ for usage examples.
