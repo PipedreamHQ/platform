@@ -124,3 +124,7 @@ export declare const END_NEEDLE = "__pd_end";
 export declare function $end(message?: string): void;
 export declare let $send: SendFunctionsWrapper;
 export declare const $sendConfigRuntimeTypeChecker: {};
+export declare class ConfigurationError extends Error {
+    exposeStack: boolean;
+    constructor(message: string, exposeStack?: boolean);
+}

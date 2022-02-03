@@ -131,3 +131,11 @@ exports.$sendConfigRuntimeTypeChecker = (function () {
     }
     return ret;
 })();
+class ConfigurationError extends Error {
+    constructor(message, exposeStack = false) {
+        super(message);
+        this.name = "ConfigurationError";
+        this.exposeStack = exposeStack;
+    }
+}
+exports.ConfigurationError = ConfigurationError;
