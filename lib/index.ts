@@ -10,6 +10,7 @@ type SendPayload = t.TypeOf<typeof SendPayload>;
 
 export const SendConfigEmail = t.partial({
     html: t.string,
+    reply_to: t.string,
     subject: t.string,
     text: t.string,
 });
